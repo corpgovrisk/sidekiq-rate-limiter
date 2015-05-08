@@ -33,7 +33,7 @@ module Sidekiq::RateLimiter
       Sidekiq.redis do |conn|
         lim = Limit.new(conn, options)
         if lim.exceeded?(klass)
-          limit(0.1) # Relax abit
+          sleep(0.1) # Relax abit
           conn.lpush("queue:#{work.queue_name}", work.message)
           nil
         else
